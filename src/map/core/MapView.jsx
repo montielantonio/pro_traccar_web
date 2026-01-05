@@ -12,6 +12,9 @@ import usePersistedState, { savePersistedState } from '../../common/util/usePers
 import { mapImages } from './preloadImages';
 import useMapStyles from './useMapStyles';
 import { useEffectAsync } from '../../reactHelper';
+import { loadImage, prepareIcon } from './mapUtil';
+import backgroundSvg from '../../resources/images/background.svg';
+import defaultSvg from '../../resources/images/icon/default.svg';
 
 const element = document.createElement('div');
 element.style.width = '100%';
@@ -42,6 +45,8 @@ const updateReadyValue = (value) => {
   readyListeners.forEach((listener) => listener(value));
 };
 
+let defaultPoiIcon = null;
+
 const initMap = async () => {
   if (ready) return;
   if (!map.hasImage('background')) {
@@ -50,6 +55,16 @@ const initMap = async () => {
         pixelRatio: window.devicePixelRatio,
       });
     });
+  }
+  // Preload default icon for POI placeholders
+  if (!defaultPoiIcon) {
+    try {
+      const background = await loadImage(backgroundSvg);
+      const defaultIcon = await loadImage(defaultSvg);
+      defaultPoiIcon = prepareIcon(background, defaultIcon, '#666666');
+    } catch (err) {
+      console.warn('Failed to load default POI icon:', err);
+    }
   }
 };
 
@@ -124,6 +139,39 @@ const MapView = ({ children }) => {
     addReadyListener(listener);
     return () => {
       removeReadyListener(listener);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Create a simple transparent placeholder image synchronously
+    const createPlaceholderImage = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = 16;
+      canvas.height = 16;
+      const ctx = canvas.getContext('2d');
+      // Create transparent image
+      ctx.clearRect(0, 0, 16, 16);
+      return ctx.getImageData(0, 0, 16, 16);
+    };
+
+    const placeholderImage = createPlaceholderImage();
+
+    // Handle missing POI icons from map styles
+    const handleStyleImageMissing = (e) => {
+      // Handle missing POI-style images (like "-11", "convenience-11")
+      if (e.id && (e.id.startsWith('-') || e.id.match(/^[a-z]+-\d+$/))) {
+        try {
+          // Use placeholder image to prevent warnings
+          map.addImage(e.id, placeholderImage);
+        } catch (err) {
+          // Silently ignore if image can't be added
+        }
+      }
+    };
+
+    map.on('styleimagemissing', handleStyleImageMissing);
+    return () => {
+      map.off('styleimagemissing', handleStyleImageMissing);
     };
   }, []);
 
