@@ -10,10 +10,9 @@ const useStyles = makeStyles()((theme) => ({
   },
   sidebar: {
     display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
     background: theme.palette.primary.main,
-    paddingBottom: theme.spacing(5),
     width: theme.dimensions.sidebarWidth,
     [theme.breakpoints.down('lg')]: {
       width: theme.dimensions.sidebarWidthTablet,

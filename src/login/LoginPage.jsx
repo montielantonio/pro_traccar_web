@@ -42,8 +42,15 @@ const useStyles = makeStyles()((theme) => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
     gap: theme.spacing(4),
     marginTop: theme.spacing(2),
+  },
+  registerLink: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: theme.spacing(0.5),
+    fontSize: '14px',
   },
   registerButton: {
     minWidth: 'unset',
@@ -234,6 +241,25 @@ const LoginPage = () => {
             >
               {t('loginLogin')}
             </Button>
+            <div style={{ textAlign: 'center', marginTop: theme.spacing(2) }}>
+              <span style={{ color: theme.palette.text.secondary, fontSize: '14px' }}>New to GPSLinkUSA? </span>
+              <Link
+                onClick={() => navigate('/register')}
+                className={classes.link}
+                underline="none"
+                sx={{ 
+                  color: theme.palette.primary.main, 
+                  fontWeight: 500, 
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  '&:hover': {
+                    textDecoration: 'underline',
+                  },
+                }}
+              >
+                Create an account
+              </Link>
+            </div>
           </>
         )}
         {openIdEnabled && (
@@ -247,16 +273,6 @@ const LoginPage = () => {
         )}
         {!openIdForced && (
           <div className={classes.extraContainer}>
-            {registrationEnabled && (
-              <Link
-                onClick={() => navigate('/register')}
-                className={classes.link}
-                underline="none"
-                variant="caption"
-              >
-                {t('loginRegister')}
-              </Link>
-            )}
             {emailEnabled && (
               <Link
                 onClick={() => navigate('/reset-password')}

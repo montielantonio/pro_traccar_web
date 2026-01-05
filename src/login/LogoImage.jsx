@@ -1,16 +1,13 @@
 import { useTheme, useMediaQuery } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
-import Logo from '../resources/images/logo.svg?react';
 
 const useStyles = makeStyles()((theme) => ({
   image: {
-    alignSelf: 'center',
-    maxWidth: '240px',
-    maxHeight: '120px',
-    width: 'auto',
-    height: 'auto',
-    margin: theme.spacing(2),
+    width: 'calc(100% - 40px)',
+    height: 'calc(100% - 40px)',
+    margin: '20px',
+    objectFit: 'contain',
   },
 }));
 
@@ -29,7 +26,8 @@ const LogoImage = ({ color }) => {
     }
     return <img className={classes.image} src={logo} alt="" />;
   }
-  return <Logo className={classes.image} style={{ color }} />;
+  // Use logo from public folder as default
+  return <img className={classes.image} src="/logo.svg" alt="GPS Link USA" />;
 };
 
 export default LogoImage;

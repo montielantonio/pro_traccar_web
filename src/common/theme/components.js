@@ -46,4 +46,68 @@ export default {
       }),
     },
   },
+  MuiDrawer: {
+    styleOverrides: {
+      paper: {
+        backgroundColor: '#1A202C',
+        color: '#FFFFFF',
+        borderRadius: '10px',
+        border: '2px solid #00E5FF',
+        boxShadow: '0 0 10px rgba(0, 229, 255, 0.5), 0 0 20px rgba(0, 229, 255, 0.3)',
+      },
+    },
+  },
+  MuiListItemButton: {
+    styleOverrides: {
+      root: {
+        borderRadius: '10px',
+        margin: '4px 8px',
+        paddingLeft: '16px',
+        paddingRight: '16px',
+        position: 'relative',
+        '&.Mui-selected': {
+          backgroundColor: 'transparent',
+          color: '#FFFFFF',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            bottom: 0,
+            width: '4px',
+            backgroundColor: '#0052FF',
+            borderRadius: '0 2px 2px 0',
+          },
+          '&:hover': {
+            backgroundColor: 'rgba(0, 82, 255, 0.08)',
+          },
+          '& .MuiListItemIcon-root': {
+            color: '#FFFFFF',
+          },
+          '& .MuiListItemText-primary': {
+            color: '#FFFFFF',
+          },
+        },
+        '&:hover': {
+          backgroundColor: 'rgba(255, 255, 255, 0.08)',
+        },
+        '& .MuiListItemIcon-root': {
+          color: '#FFFFFF',
+          minWidth: '40px',
+        },
+        '& .MuiListItemText-primary': {
+          color: '#FFFFFF',
+        },
+      },
+    },
+  },
+  MuiListSubheader: {
+    styleOverrides: {
+      root: {
+        backgroundColor: '#1A202C',
+        color: '#FFFFFF',
+        fontWeight: 500,
+      },
+    },
+  },
 };
