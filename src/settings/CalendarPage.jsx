@@ -51,7 +51,7 @@ const updateCalendar = (lines, index, element) => window.btoa(lines.map((e, i) =
 const simpleCalendar = () => window.btoa([
   'BEGIN:VCALENDAR',
   'VERSION:2.0',
-  'PRODID:-//Traccar//NONSGML Traccar//EN',
+  'PRODID:-//GPSLink//NONSGML GPSLink//EN',
   'BEGIN:VEVENT',
   'UID:00000000-0000-0000-0000-000000000000',
   `DTSTART;${formatCalendarTime(dayjs())}`,
@@ -72,7 +72,7 @@ const CalendarPage = () => {
 
   const decoded = item && item.data && window.atob(item.data);
 
-  const simple = decoded && decoded.indexOf('//Traccar//') > 0;
+  const simple = decoded && decoded.indexOf('//GPSLink//') > 0;
 
   const lines = decoded && decoded.split('\n');
 

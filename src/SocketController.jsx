@@ -55,6 +55,7 @@ const SocketController = () => {
     })));
   }, [features, dispatch, soundEvents, soundAlarms]);
 
+
   const connectSocket = () => {
     clearReconnectTimeout();
     if (socketRef.current && socketRef.current.readyState !== WebSocket.CLOSED) {

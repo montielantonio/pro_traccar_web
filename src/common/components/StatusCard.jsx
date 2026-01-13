@@ -40,29 +40,77 @@ import fetchOrThrow from '../util/fetchOrThrow';
 const useStyles = makeStyles()((theme, { desktopPadding }) => ({
   card: {
     pointerEvents: 'auto',
-    width: theme.dimensions.popupMaxWidth,
+    width: '320px',
+    minWidth: '280px',
+    maxWidth: '90vw',
+    backgroundColor: '#1A202C',
+    borderRadius: '10px',
+    border: '2px solid #00E5FF',
+    boxShadow: '0 0 15px rgba(0, 229, 255, 0.6), 0 0 30px rgba(0, 229, 255, 0.4)',
+    color: '#FFFFFF',
+    display: 'flex',
+    flexDirection: 'column',
   },
   media: {
     height: theme.dimensions.popupImageHeight,
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'flex-start',
+    borderRadius: '8px 8px 0 0',
   },
   mediaButton: {
     color: theme.palette.common.white,
-    mixBlendMode: 'difference',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: '50%',
+    '&:hover': {
+      backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    },
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: theme.spacing(1, 1, 0, 2),
+    padding: theme.spacing(1.5, 2),
+    backgroundColor: 'rgba(0, 229, 255, 0.1)',
+    borderRadius: '8px 8px 0 0',
+    borderBottom: '1px solid rgba(0, 229, 255, 0.3)',
+  },
+  headerText: {
+    color: '#FFFFFF',
+    fontWeight: 600,
+    fontSize: '1rem',
+    letterSpacing: '0.02em',
+  },
+  closeButton: {
+    color: '#FFFFFF',
+    '&:hover': {
+      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    },
   },
   content: {
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-    maxHeight: theme.dimensions.cardContentMaxHeight,
-    overflow: 'auto',
+    paddingTop: theme.spacing(2.5),
+    paddingBottom: theme.spacing(2.5),
+    paddingLeft: theme.spacing(2.5),
+    paddingRight: theme.spacing(2.5),
+    maxHeight: '50vh',
+    overflowY: 'auto',
+    overflowX: 'hidden',
+    backgroundColor: '#1A202C',
+    flex: 1,
+    '&::-webkit-scrollbar': {
+      width: '6px',
+    },
+    '&::-webkit-scrollbar-track': {
+      background: 'rgba(255, 255, 255, 0.05)',
+      borderRadius: '3px',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      background: 'rgba(0, 229, 255, 0.5)',
+      borderRadius: '3px',
+      '&:hover': {
+        background: 'rgba(0, 229, 255, 0.7)',
+      },
+    },
   },
   icon: {
     width: '25px',
@@ -70,24 +118,79 @@ const useStyles = makeStyles()((theme, { desktopPadding }) => ({
     filter: 'brightness(0) invert(1)',
   },
   table: {
+    width: '100%',
     '& .MuiTableCell-sizeSmall': {
-      paddingLeft: 0,
-      paddingRight: 0,
+      paddingTop: theme.spacing(1.5),
+      paddingBottom: theme.spacing(1.5),
+      borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
     },
     '& .MuiTableCell-sizeSmall:first-of-type': {
-      paddingRight: theme.spacing(1),
+      paddingRight: theme.spacing(2),
+      width: '40%',
+      minWidth: '120px',
+    },
+    '& .MuiTableCell-sizeSmall:last-of-type': {
+      paddingLeft: theme.spacing(2),
+      textAlign: 'right',
     },
   },
   cell: {
-    borderBottom: 'none',
+    borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
+  },
+  cellText: {
+    color: '#FFFFFF',
+    fontWeight: 500,
+    fontSize: '0.875rem',
+    letterSpacing: '0.01em',
+  },
+  cellTextSecondary: {
+    color: '#FFFFFF',
+    fontWeight: 400,
+    fontSize: '0.875rem',
+    letterSpacing: '0.01em',
+  },
+  link: {
+    color: '#00E5FF',
+    textDecoration: 'none',
+    fontWeight: 500,
+    fontSize: '0.875rem',
+    display: 'inline-block',
+    padding: theme.spacing(0.5, 0),
+    transition: 'all 0.2s ease',
+    '&:hover': {
+      color: '#00D4FF',
+      textDecoration: 'underline',
+      transform: 'translateX(2px)',
+    },
   },
   actions: {
     justifyContent: 'space-between',
+    padding: theme.spacing(1, 2),
+    backgroundColor: 'rgba(0, 229, 255, 0.05)',
+    borderRadius: '0 0 8px 8px',
+    borderTop: '1px solid rgba(0, 229, 255, 0.3)',
+  },
+  actionButton: {
+    color: 'rgba(255, 255, 255, 0.7)',
+    transition: 'all 0.3s ease',
+    '&:hover': {
+      color: '#FFFFFF',
+      backgroundColor: 'rgba(0, 229, 255, 0.1)',
+      transform: 'scale(1.1)',
+    },
+  },
+  actionButtonError: {
+    color: 'rgba(255, 87, 87, 0.7)',
+    '&:hover': {
+      color: '#FF5757',
+      backgroundColor: 'rgba(255, 87, 87, 0.1)',
+      transform: 'scale(1.1)',
+    },
   },
   root: {
     pointerEvents: 'none',
     position: 'fixed',
-    zIndex: 5,
+    zIndex: 1300,
     left: '50%',
     [theme.breakpoints.up('md')]: {
       left: `calc(50% + ${desktopPadding} / 2)`,
@@ -107,10 +210,10 @@ const StatusRow = ({ name, content }) => {
   return (
     <TableRow>
       <TableCell className={classes.cell}>
-        <Typography variant="body2">{name}</Typography>
+        <Typography variant="body2" className={classes.cellText}>{name}</Typography>
       </TableCell>
       <TableCell className={classes.cell}>
-        <Typography variant="body2" color="textSecondary">{content}</Typography>
+        <Typography variant="body2" className={classes.cellTextSecondary}>{content}</Typography>
       </TableCell>
     </TableRow>
   );
@@ -194,19 +297,20 @@ const StatusCard = ({ deviceId, position, onClose, disableActions, desktopPaddin
                 </CardMedia>
               ) : (
                 <div className={`${classes.header} draggable-header`}>
-                  <Typography variant="body2" color="textSecondary">
+                  <Typography variant="body2" className={classes.headerText}>
                     {device.name}
                   </Typography>
                   <IconButton
                     size="small"
                     onClick={onClose}
                     onTouchStart={onClose}
+                    className={classes.closeButton}
                   >
                     <CloseIcon fontSize="small" />
                   </IconButton>
                 </div>
               )}
-              {position && (
+              {position ? (
                 <CardContent className={classes.content}>
                   <Table size="small" classes={{ root: classes.table }}>
                     <TableBody>
@@ -223,62 +327,86 @@ const StatusCard = ({ deviceId, position, onClose, disableActions, desktopPaddin
                           )}
                         />
                       ))}
-
                     </TableBody>
                     <TableFooter>
                       <TableRow>
-                        <TableCell colSpan={2} className={classes.cell}>
-                          <Typography variant="body2">
-                            <Link component={RouterLink} to={`/position/${position.id}`}>{t('sharedShowDetails')}</Link>
+                        <TableCell 
+                          colSpan={2} 
+                          className={classes.cell} 
+                          style={{ borderBottom: 'none', paddingTop: '16px', paddingBottom: 0 }}
+                        >
+                          <Typography variant="body2" style={{ textAlign: 'center' }}>
+                            <Link component={RouterLink} to={`/position/${position.id}`} className={classes.link}>
+                              {t('sharedShowDetails')}
+                            </Link>
                           </Typography>
                         </TableCell>
                       </TableRow>
                     </TableFooter>
                   </Table>
                 </CardContent>
+              ) : (
+                <CardContent className={classes.content}>
+                  <Typography variant="body2" className={classes.cellText} style={{ textAlign: 'center', padding: '20px' }}>
+                    {t('sharedNoData')}
+                  </Typography>
+                </CardContent>
               )}
               <CardActions classes={{ root: classes.actions }} disableSpacing>
                 <Tooltip title={t('sharedExtra')}>
-                  <IconButton
-                    color="secondary"
-                    onClick={(e) => setAnchorEl(e.currentTarget)}
-                    disabled={!position}
-                  >
-                    <PendingIcon />
-                  </IconButton>
+                  <span>
+                    <IconButton
+                      onClick={(e) => setAnchorEl(e.currentTarget)}
+                      disabled={!position}
+                      className={classes.actionButton}
+                    >
+                      <PendingIcon />
+                    </IconButton>
+                  </span>
                 </Tooltip>
                 <Tooltip title={t('reportReplay')}>
-                  <IconButton
-                    onClick={() => navigate(`/replay?deviceId=${deviceId}`)}
-                    disabled={disableActions || !position}
-                  >
-                    <RouteIcon />
-                  </IconButton>
+                  <span>
+                    <IconButton
+                      onClick={() => navigate(`/replay?deviceId=${deviceId}`)}
+                      disabled={disableActions || !position}
+                      className={classes.actionButton}
+                    >
+                      <RouteIcon />
+                    </IconButton>
+                  </span>
                 </Tooltip>
                 <Tooltip title={t('commandTitle')}>
-                  <IconButton
-                    onClick={() => navigate(`/settings/device/${deviceId}/command`)}
-                    disabled={disableActions}
-                  >
-                    <SendIcon />
-                  </IconButton>
+                  <span>
+                    <IconButton
+                      onClick={() => navigate(`/settings/device/${deviceId}/command`)}
+                      disabled={disableActions}
+                      className={classes.actionButton}
+                    >
+                      <SendIcon />
+                    </IconButton>
+                  </span>
                 </Tooltip>
                 <Tooltip title={t('sharedEdit')}>
-                  <IconButton
-                    onClick={() => navigate(`/settings/device/${deviceId}`)}
-                    disabled={disableActions || deviceReadonly}
-                  >
-                    <EditIcon />
-                  </IconButton>
+                  <span>
+                    <IconButton
+                      onClick={() => navigate(`/settings/device/${deviceId}`)}
+                      disabled={disableActions || deviceReadonly}
+                      className={classes.actionButton}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  </span>
                 </Tooltip>
                 <Tooltip title={t('sharedRemove')}>
-                  <IconButton
-                    color="error"
-                    onClick={() => setRemoving(true)}
-                    disabled={disableActions || deviceReadonly}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
+                  <span>
+                    <IconButton
+                      onClick={() => setRemoving(true)}
+                      disabled={disableActions || deviceReadonly}
+                      className={classes.actionButtonError}
+                    >
+                      <DeleteIcon/>
+                    </IconButton>
+                  </span>
                 </Tooltip>
               </CardActions>
             </Card>

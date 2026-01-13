@@ -19,6 +19,12 @@ const useStyles = makeStyles()((theme) => ({
     display: 'flex',
     gap: theme.spacing(1),
   },
+  searchInput: {
+    borderRadius: '10px',
+    '& .MuiOutlinedInput-notchedOutline': {
+      borderRadius: '10px',
+    },
+  },
   filterPanel: {
     display: 'flex',
     flexDirection: 'column',
@@ -81,6 +87,7 @@ const MainToolbar = ({
         )}
         size="small"
         fullWidth
+        className={classes.searchInput}
       />
       <Popover
         open={!!devicesAnchorEl && !devicesOpen}

@@ -12,7 +12,7 @@ const useStyles = makeStyles()((theme) => ({
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    background: theme.palette.primary.main,
+    background: '#FFFFFF',
     width: theme.dimensions.sidebarWidth,
     [theme.breakpoints.down('lg')]: {
       width: theme.dimensions.sidebarWidthTablet,
@@ -46,7 +46,7 @@ const LoginLayout = ({ children }) => {
   return (
     <main className={classes.root}>
       <div className={classes.sidebar}>
-        {!useMediaQuery(theme.breakpoints.down('lg')) && <LogoImage color={theme.palette.secondary.contrastText} />}
+        {!useMediaQuery(theme.breakpoints.down('lg')) && <LogoImage />}
       </div>
       <Paper className={classes.paper}>
         <form className={classes.form}>

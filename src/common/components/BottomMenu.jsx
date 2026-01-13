@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Paper, BottomNavigation, BottomNavigationAction, Menu, MenuItem, Typography, Badge,
 } from '@mui/material';
+import { makeStyles } from 'tss-react/mui';
 
 import DescriptionIcon from '@mui/icons-material/Description';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -16,7 +17,45 @@ import { useTranslation } from './LocalizationProvider';
 import { useRestriction } from '../util/permissions';
 import { nativePostMessage } from './NativeInterface';
 
+const useStyles = makeStyles()((theme) => ({
+  bottomNavPaper: {
+    borderRadius: '20px 20px 0 0',
+    boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.1)',
+    borderTop: '1px solid rgba(0, 0, 0, 0.05)',
+  },
+  bottomNavigation: {
+    borderRadius: '20px 20px 0 0',
+    backgroundColor: '#FFFFFF',
+    '& .MuiBottomNavigationAction-root': {
+      minWidth: 'auto',
+      padding: theme.spacing(1, 2),
+      borderRadius: '10px',
+      margin: theme.spacing(0.5, 1),
+      transition: 'all 0.3s ease',
+      '&.Mui-selected': {
+        backgroundColor: 'rgba(0, 82, 255, 0.1)',
+        color: '#0052FF',
+        '& .MuiSvgIcon-root': {
+          transform: 'scale(1.1)',
+          transition: 'transform 0.3s ease',
+        },
+      },
+      '&:hover': {
+        backgroundColor: 'rgba(0, 82, 255, 0.05)',
+        transform: 'translateY(-2px)',
+        '& .MuiSvgIcon-root': {
+          transform: 'scale(1.05)',
+        },
+      },
+      '& .MuiSvgIcon-root': {
+        transition: 'transform 0.3s ease, color 0.3s ease',
+      },
+    },
+  },
+}));
+
 const BottomMenu = () => {
+  const { classes } = useStyles();
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -114,8 +153,13 @@ const BottomMenu = () => {
   };
 
   return (
-    <Paper square elevation={3}>
-      <BottomNavigation value={currentSelection()} onChange={handleSelection} showLabels>
+    <Paper className={classes.bottomNavPaper} elevation={3}>
+      <BottomNavigation 
+        value={currentSelection()} 
+        onChange={handleSelection} 
+        showLabels
+        className={classes.bottomNavigation}
+      >
         <BottomNavigationAction
           label={t('mapTitle')}
           icon={(

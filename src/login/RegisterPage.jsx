@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Button, TextField, Typography, Snackbar, IconButton,
+  Button, TextField, Typography, Snackbar, IconButton, Alert, AlertTitle,
 } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { useNavigate } from 'react-router-dom';
@@ -39,6 +39,7 @@ const RegisterPage = () => {
 
   const server = useSelector((state) => state.session.server);
   const totpForce = useSelector((state) => state.session.server.attributes.totpForce);
+  const registrationEnabled = useSelector((state) => state.session.server.registration);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -76,6 +77,12 @@ const RegisterPage = () => {
             {t('loginRegister')}
           </Typography>
         </div>
+        {!registrationEnabled && !server.newServer && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            <AlertTitle>{t('serverRegistration')} {t('sharedDisabled')}</AlertTitle>
+            {t('sharedShowDetails')}
+          </Alert>
+        )}
         <TextField
           required
           label={t('sharedName')}
@@ -83,6 +90,7 @@ const RegisterPage = () => {
           value={name}
           autoComplete="name"
           autoFocus
+          disabled={!registrationEnabled && !server.newServer}
           onChange={(event) => setName(event.target.value)}
         />
         <TextField
@@ -92,6 +100,7 @@ const RegisterPage = () => {
           name="email"
           value={email}
           autoComplete="email"
+          disabled={!registrationEnabled && !server.newServer}
           onChange={(event) => setEmail(event.target.value)}
         />
         <TextField
@@ -101,6 +110,7 @@ const RegisterPage = () => {
           value={password}
           type="password"
           autoComplete="current-password"
+          disabled={!registrationEnabled && !server.newServer}
           onChange={(event) => setPassword(event.target.value)}
         />
         {totpForce && (
@@ -109,6 +119,7 @@ const RegisterPage = () => {
             label={t('loginTotpKey')}
             name="totpKey"
             value={totpKey || ''}
+            disabled={!registrationEnabled && !server.newServer}
             InputProps={{
               readOnly: true,
             }}
@@ -119,7 +130,7 @@ const RegisterPage = () => {
           color="secondary"
           onClick={handleSubmit}
           type="submit"
-          disabled={!name || !password || !(server.newServer || /(.+)@(.+)\.(.{2,})/.test(email))}
+          disabled={(!registrationEnabled && !server.newServer) || !name || !password || !(server.newServer || /(.+)@(.+)\.(.{2,})/.test(email))}
           fullWidth
         >
           {t('loginRegister')}

@@ -1,7 +1,7 @@
 {
   "short_name": "GPS Link USA",
-  "name": "GPS Link USA - GPS Tracking System",
-  "description": "GPS Tracking System",
+  "name": "GPS Link USA",
+  "description": "GPS Link",
   "theme_color": "#0052FF",
   "background_color": "#ffffff",
   "display": "standalone",

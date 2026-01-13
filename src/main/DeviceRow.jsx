@@ -48,8 +48,43 @@ const useStyles = makeStyles()((theme) => ({
   neutral: {
     color: theme.palette.neutral.main,
   },
-  selected: {
-    backgroundColor: theme.palette.action.selected,
+  listItemButton: {
+    borderRadius: '10px',
+    margin: '4px 8px',
+    paddingLeft: '16px',
+    paddingRight: '16px',
+    position: 'relative',
+    color: '#FFFFFF',
+    '&.Mui-selected': {
+      backgroundColor: 'transparent',
+      color: '#FFFFFF',
+      '&::before': {
+        content: '""',
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        bottom: 0,
+        width: '4px',
+        backgroundColor: '#0052FF',
+        borderRadius: '0 2px 2px 0',
+      },
+      '&:hover': {
+        backgroundColor: 'rgba(0, 82, 255, 0.08)',
+      },
+    },
+    '&:hover': {
+      backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    },
+  },
+  avatar: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  primaryText: {
+    color: '#FFFFFF',
+    fontWeight: 500,
+  },
+  secondaryText: {
+    color: 'rgba(255, 255, 255, 0.7)',
   },
 }));
 
@@ -89,10 +124,10 @@ const DeviceRow = ({ devices, index, style }) => {
         onClick={() => dispatch(devicesActions.selectId(item.id))}
         disabled={!admin && item.disabled}
         selected={selectedDeviceId === item.id}
-        className={selectedDeviceId === item.id ? classes.selected : null}
+        className={classes.listItemButton}
       >
         <ListItemAvatar>
-          <Avatar>
+          <Avatar className={classes.avatar}>
             <img className={classes.icon} src={mapIcons[mapIconKey(item.category)]} alt="" />
           </Avatar>
         </ListItemAvatar>
@@ -104,22 +139,28 @@ const DeviceRow = ({ devices, index, style }) => {
             secondary: Typography,
           }}
           slotProps={{
-            primary: { noWrap: true },
-            secondary: { noWrap: true },
+            primary: { 
+              noWrap: true,
+              className: classes.primaryText,
+            },
+            secondary: { 
+              noWrap: true,
+              className: classes.secondaryText,
+            },
           }}
         />
         {position && (
           <>
             {position.attributes.hasOwnProperty('alarm') && (
               <Tooltip title={`${t('eventAlarm')}: ${formatAlarm(position.attributes.alarm, t)}`}>
-                <IconButton size="small">
+                <IconButton size="small" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
                   <ErrorIcon fontSize="small" className={classes.error} />
                 </IconButton>
               </Tooltip>
             )}
             {position.attributes.hasOwnProperty('ignition') && (
               <Tooltip title={`${t('positionIgnition')}: ${formatBoolean(position.attributes.ignition, t)}`}>
-                <IconButton size="small">
+                <IconButton size="small" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
                   {position.attributes.ignition ? (
                     <EngineIcon width={20} height={20} className={classes.success} />
                   ) : (
@@ -130,7 +171,7 @@ const DeviceRow = ({ devices, index, style }) => {
             )}
             {position.attributes.hasOwnProperty('batteryLevel') && (
               <Tooltip title={`${t('positionBatteryLevel')}: ${formatPercentage(position.attributes.batteryLevel)}`}>
-                <IconButton size="small">
+                <IconButton size="small" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
                   {(position.attributes.batteryLevel > 70 && (
                     position.attributes.charge
                       ? (<BatteryChargingFullIcon fontSize="small" className={classes.success} />)

@@ -62,6 +62,11 @@ const useStyles = makeStyles()((theme) => ({
     zIndex: 4,
     display: 'flex',
     minHeight: 0,
+    backgroundColor: '#1A202C',
+    borderRadius: '10px',
+    border: '2px solid #00E5FF',
+    boxShadow: '0 0 10px rgba(0, 229, 255, 0.5), 0 0 20px rgba(0, 229, 255, 0.3)',
+    overflow: 'hidden',
   },
 }));
 
@@ -137,9 +142,9 @@ const MainPage = () => {
               />
             </div>
           )}
-          <Paper square className={classes.contentList} style={devicesOpen ? {} : { visibility: 'hidden' }}>
+          <div className={classes.contentList} style={devicesOpen ? {} : { visibility: 'hidden' }}>
             <DeviceList devices={filteredDevices} />
-          </Paper>
+          </div>
         </div>
         {desktop && (
           <div className={classes.footer}>
